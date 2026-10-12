@@ -37,13 +37,13 @@ jobs:
         run: gradle :app:assembleDebug --stacktrace
 
       - name: Rename APK
-        run: cp app/build/outputs/apk/debug/app-debug.apk LyricSide-v2.apk
+        run: cp app/build/outputs/apk/debug/app-debug.apk LyricSide-v3.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: LyricSide-v2-APK
-          path: LyricSide-v2.apk
+          name: LyricSide-v3-APK
+          path: LyricSide-v3.apk
 
       - name: Publish installable release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -53,6 +53,6 @@ jobs:
           name: LyricSide build ${{ github.run_number }}
           body: |
             APK Android gerado automaticamente.
-            Baixe `LyricSide-v2.apk` nos Assets desta release.
-          files: LyricSide-v2.apk
+            Baixe `LyricSide-v3.apk` nos Assets desta release.
+          files: LyricSide-v3.apk
           prerelease: true

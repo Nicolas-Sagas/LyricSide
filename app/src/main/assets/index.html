@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<title>LyricSide</title>
+<style>
+:root{--bg:#090e1a;--panel:#111827;--p2:#182235;--txt:#f4f7ff;--muted:#9ba8bc;--line:#27334a;--a:#84a3ff;--g:#5ad6b5;--warn:#ffcc72;--danger:#ff8191;--fs:1}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}body{padding-bottom:86px}
+button,input,textarea,select{font:inherit}button{border:0;cursor:pointer}input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:13px;background:#0c1424;color:var(--txt);outline:none}textarea{min-height:145px;resize:vertical;line-height:1.45}
+.top{position:sticky;top:0;z-index:20;background:rgba(9,14,26,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}.topin{max-width:900px;margin:auto;padding:12px 14px;display:flex;gap:8px;align-items:center}.brand{flex:1;font-weight:950}.brand small{display:block;color:var(--muted);font-size:.7rem}.icon{width:42px;height:42px;border-radius:13px;background:var(--p2);color:var(--txt);font-weight:800}
+main{max-width:900px;margin:auto;padding:15px 14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:17px}.hero{padding:18px;margin-bottom:13px}.hero h1{margin:0 0 6px;font-size:1.45rem}.hero p{margin:0;color:var(--muted);line-height:1.45}.btn{padding:11px 14px;border-radius:13px;background:var(--p2);color:var(--txt);font-weight:800}.primary{background:var(--a);color:#07101f}.good{background:var(--g);color:#061813}.danger{color:var(--danger);border:1px solid #59303a;background:#25151d}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.field{display:grid;gap:6px;margin-bottom:12px}.field label{font-weight:800}.hint,.meta{font-size:.85rem;color:var(--muted)}.grid{display:grid;gap:10px}.song{padding:15px}.song h3{margin:0 0 3px}.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}.badge{font-size:.72rem;padding:5px 8px;border-radius:999px;background:var(--p2);color:var(--muted);font-weight:850}.star{background:transparent;color:#f3c866;font-size:1.35rem}.songtop{display:flex;gap:8px}.grow{flex:1;min-width:0}.empty{text-align:center;padding:32px;color:var(--muted)}
+.readerHead{padding:15px;margin-bottom:10px}.readerHead h2{margin:0}.audioBox{position:sticky;top:66px;z-index:15;padding:11px;margin-bottom:10px;background:rgba(17,24,39,.97)}audio{width:100%}.modes{display:flex;gap:7px;overflow:auto;padding-bottom:9px}.modes .btn{white-space:nowrap;padding:9px 11px}.lyrics{display:grid;gap:8px}.pair{position:relative;padding:13px 14px;border:1px solid var(--line);border-radius:15px;background:var(--panel);font-size:calc(1rem * var(--fs));line-height:1.5}.pair .en{font-weight:850;padding-right:28px}.pair .pt{margin-top:8px;color:#c9d4e7}.tag{font-size:.65em;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:900;margin-bottom:3px}.lineStar{position:absolute;right:7px;top:7px;background:transparent;color:#738199;font-size:1.05rem}.lineStar.on{color:#f3c866}.mode-en .pt{display:none}.mode-pt .en,.mode-pt .entag{display:none}.mode-study .pt{display:none}.mode-study .pair.show .pt{display:block}.notice{padding:11px 13px;border:1px solid #304c7e;border-radius:13px;background:#101e38;color:#dfe7ff;margin:10px 0}.hidden{display:none!important}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(9,14,26,.97);border-top:1px solid var(--line);padding:8px 10px calc(8px + env(safe-area-inset-bottom));z-index:30}.navin{max-width:900px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.nav button{padding:10px;background:transparent;color:var(--muted);border-radius:12px;font-weight:850}.nav button.on{background:var(--p2);color:var(--txt)}
+.progress{height:8px;border-radius:99px;background:#0b1322;overflow:hidden;border:1px solid var(--line);display:none}.progress div{height:100%;width:0;background:var(--g)}
+@media(prefers-color-scheme:light){:root{--bg:#f3f6fb;--panel:#fff;--p2:#e9eef7;--txt:#172033;--muted:#68748a;--line:#dbe3ef}.top,.nav{background:rgba(243,246,251,.96)}input,textarea,select{background:#fff}.pair .pt{color:#40506b}.audioBox{background:rgba(255,255,255,.97)}}
+</style>
+</head>
+<body>
+<header class="top"><div class="topin"><div class="brand">LyricSide <small>inglês com músicas • offline depois de salvar</small></div><button class="icon" id="fd">A−</button><button class="icon" id="fu">A+</button></div></header>
+<main>
+<section id="lib">
+ <div class="card hero"><h1>Sua biblioteca bilíngue</h1><p>Salve letra, tradução, áudio local e frases difíceis no próprio celular.</p></div>
+ <div class="toolbar"><button class="btn primary" onclick="edit()">＋ Nova música</button><button class="btn" onclick="backup()">⬇ Backup</button><button class="btn" onclick="restorePick()">⬆ Restaurar</button><input id="restore" class="hidden" type="file" accept=".json" onchange="restoreFile(event)"></div>
+ <input id="q" placeholder="Buscar música ou artista…" oninput="renderLib()">
+ <div id="songs" class="grid" style="margin-top:10px"></div>
+</section>
+
+<section id="form" class="hidden">
+ <div class="card hero"><h1 id="formTitle">Nova música</h1><p>A tradução automática usa internet somente quando você pedir.</p></div>
+ <div class="card" style="padding:15px">
+  <input id="id" type="hidden">
+  <div class="field"><label>Título</label><input id="title" placeholder="Nome da música"></div>
+  <div class="field"><label>Artista</label><input id="artist" placeholder="Artista"></div>
+  <div class="field"><label>Áudio local (opcional)</label><input id="audioFile" type="file" accept="audio/*"><div id="audioInfo" class="hint"></div></div>
+  <div class="field"><label>Inglês</label><textarea id="en" placeholder="Cole a letra em inglês…"></textarea></div>
+  <div class="field"><label>Português</label><textarea id="pt" placeholder="Cole a tradução ou use o tradutor automático…"></textarea><div class="hint">Uma linha em inglês deve corresponder à mesma linha em português.</div></div>
+  <div class="field"><label>Anotações</label><textarea id="notes" style="min-height:80px" placeholder="Gírias, pronúncia, observações…"></textarea></div>
+  <div id="msg" class="notice hidden"></div><div class="progress" id="prog"><div id="bar"></div></div>
+  <div class="toolbar"><button id="translate" class="btn good" onclick="autoTranslate()">🌐 Traduzir</button><button class="btn primary" onclick="save()">💾 Salvar</button><button class="btn" onclick="showLib()">Cancelar</button></div>
+ </div>
+</section>
+
+<section id="reader" class="hidden">
+ <div class="card readerHead"><div class="songtop"><div class="grow"><h2 id="rt"></h2><div id="ra" class="meta"></div><div id="rb" class="badges"></div></div><button id="fav" class="star" onclick="favCurrent()">☆</button></div><div class="toolbar"><button class="btn" onclick="edit(current)">✏ Editar</button><button class="btn danger" onclick="removeCurrent()">Excluir</button></div></div>
+ <div id="abox" class="card audioBox hidden"><audio id="audio" controls></audio><div class="toolbar" style="margin:7px 0 0"><button class="btn" onclick="seek(-5)">−5s</button><button class="btn" onclick="seek(5)">+5s</button><select id="speed" style="width:auto" onchange="speed()"><option>.75</option><option>.9</option><option selected>1</option><option>1.1</option><option>1.25</option></select></div></div>
+ <div class="modes"><button class="btn primary" onclick="mode('both',this)">EN + PT</button><button class="btn" onclick="mode('en',this)">Só inglês</button><button class="btn" onclick="mode('pt',this)">Só português</button><button class="btn" onclick="mode('study',this)">Ocultar PT</button><button class="btn" onclick="difficultOnly(this)">★ Difíceis</button></div>
+ <div id="noteBox" class="notice hidden"></div><div id="lyr" class="lyrics"></div>
+</section>
+
+<section id="practice" class="hidden">
+ <div class="card hero"><h1>Revisão</h1><p>Todas as frases que você marcou com ★.</p></div><div id="review" class="lyrics"></div>
+</section>
+</main>
+
+<nav class="nav"><div class="navin"><button id="nlib" class="on" onclick="showLib()">📚<br>Biblioteca</button><button id="nnew" onclick="edit()">＋<br>Nova</button><button id="nrev" onclick="showPractice()">★<br>Revisão</button></div></nav>
+
+<script>
+const $=x=>document.getElementById(x), KEY='lyricside.songs.v3', TC='lyricside.cache.v3';
+let current=null,viewMode='both',onlyDiff=false,audioUrl=null;
+const songs=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]}}, putSongs=s=>localStorage.setItem(KEY,JSON.stringify(s));
+const cache=()=>{try{return JSON.parse(localStorage.getItem(TC)||'{}')}catch{return{}}}, putCache=c=>localStorage.setItem(TC,JSON.stringify(c));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7), lines=s=>(s||'').replace(/\r/g,'').split('\n');
+const esc=s=>String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+
+const DB='lyricside-audio-v1';
+function odb(){return new Promise((ok,no)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains('a'))r.result.createObjectStore('a')};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)})}
+async function adb(k,v){const d=await odb();return new Promise((ok,no)=>{const t=d.transaction('a','readwrite');t.objectStore('a').put(v,k);t.oncomplete=ok;t.onerror=()=>no(t.error)})}
+async function agb(k){const d=await odb();return new Promise((ok,no)=>{const t=d.transaction('a');const r=t.objectStore('a').get(k);r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)})}
+async function adel(k){const d=await odb();return new Promise((ok,no)=>{const t=d.transaction('a','readwrite');t.objectStore('a').delete(k);t.oncomplete=ok;t.onerror=()=>no(t.error)})}
+
+function show(name){['lib','form','reader','practice'].forEach(x=>$(x).classList.toggle('hidden',x!==name));['nlib','nnew','nrev'].forEach(x=>$(x).classList.remove('on'));if(name==='lib'||name==='reader')$('nlib').classList.add('on');if(name==='form')$('nnew').classList.add('on');if(name==='practice')$('nrev').classList.add('on');scrollTo(0,0)}
+function stopAudio(){if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null}$('audio').removeAttribute('src');$('audio').load()}
+function showLib(){stopAudio();show('lib');renderLib()}
+function renderLib(){const q=$('q').value.toLowerCase().trim(),arr=songs().filter(s=>(s.title+' '+s.artist).toLowerCase().includes(q)).sort((a,b)=>(b.favorite-a.favorite)||(b.updated-a.updated));$('songs').innerHTML=arr.length?arr.map(s=>`<div class="card song"><div class="songtop"><div class="grow"><h3>${esc(s.title)}</h3><div class="meta">${esc(s.artist||'Artista não informado')}</div><div class="badges">${s.hasAudio?'<span class="badge">🎧 áudio</span>':''}${(s.diff?.length||0)?`<span class="badge">★ ${s.diff.length}</span>`:''}</div></div><button class="star" onclick="toggleFav('${s.id}',event)">${s.favorite?'★':'☆'}</button></div><div class="toolbar"><button class="btn primary" onclick="openSong('${s.id}')">Abrir</button><button class="btn" onclick="edit('${s.id}')">Editar</button></div></div>`).join(''):'<div class="card empty">Nenhuma música salva ainda.</div>'}
+function toggleFav(id,e){e?.stopPropagation();const a=songs(),i=a.findIndex(x=>x.id===id);if(i<0)return;a[i].favorite=!a[i].favorite;a[i].updated=Date.now();putSongs(a);renderLib()}
+
+function edit(id=null){stopAudio();show('form');$('msg').classList.add('hidden');$('prog').style.display='none';$('audioFile').value='';if(id){const s=songs().find(x=>x.id===id);if(!s)return showLib();$('formTitle').textContent='Editar música';$('id').value=s.id;$('title').value=s.title;$('artist').value=s.artist||'';$('en').value=s.en||'';$('pt').value=s.pt||'';$('notes').value=s.notes||'';$('audioInfo').textContent=s.hasAudio?'Áudio salvo. Selecione outro apenas para substituir.':''}else{$('formTitle').textContent='Nova música';['id','title','artist','en','pt','notes'].forEach(x=>$(x).value='');$('audioInfo').textContent=''}}
+async function save(){const id=$('id').value||uid(),title=$('title').value.trim(),en=$('en').value.trimEnd();if(!title||!en)return alert('Preencha título e letra em inglês.');const a=songs(),i=a.findIndex(x=>x.id===id),old=i>=0?a[i]:null,file=$('audioFile').files?.[0];let hasAudio=old?.hasAudio||false;if(file){await adb(id,file);hasAudio=true}const s={id,title,artist:$('artist').value.trim(),en,pt:$('pt').value.trimEnd(),notes:$('notes').value.trim(),favorite:old?.favorite||false,diff:old?.diff||[],hasAudio,created:old?.created||Date.now(),updated:Date.now()};if(i>=0)a[i]=s;else a.push(s);putSongs(a);current=id;await openSong(id)}
+function pairs(s){const e=lines(s.en),p=lines(s.pt),m=Math.max(e.length,p.length);return Array.from({length:m},(_,i)=>({i,en:e[i]||'',pt:p[i]||''}))}
+
+async function openSong(id){stopAudio();const s=songs().find(x=>x.id===id);if(!s)return;current=id;viewMode='both';onlyDiff=false;show('reader');$('rt').textContent=s.title;$('ra').textContent=s.artist||'';$('fav').textContent=s.favorite?'★':'☆';$('rb').innerHTML=`${s.hasAudio?'<span class="badge">🎧 áudio</span>':''}${(s.diff?.length||0)?`<span class="badge">★ ${s.diff.length} difíceis</span>`:''}`;$('noteBox').classList.toggle('hidden',!s.notes);$('noteBox').innerHTML=s.notes?'<b>Anotações</b><br>'+esc(s.notes).replace(/\n/g,'<br>'):'';if(s.hasAudio){try{const b=await agb(id);if(b){audioUrl=URL.createObjectURL(b);$('audio').src=audioUrl;$('abox').classList.remove('hidden')}else $('abox').classList.add('hidden')}catch{$('abox').classList.add('hidden')}}else $('abox').classList.add('hidden');document.querySelectorAll('.modes .btn').forEach(b=>b.classList.remove('primary'));document.querySelector('.modes .btn').classList.add('primary');renderReader()}
+function renderReader(){const s=songs().find(x=>x.id===current);if(!s)return;let p=pairs(s);if(onlyDiff)p=p.filter(x=>(s.diff||[]).includes(x.i));const el=$('lyr');el.className='lyrics mode-'+viewMode;el.innerHTML=p.length?p.map(x=>{if(!x.en.trim()&&!x.pt.trim())return '<div style="height:8px"></div>';const d=(s.diff||[]).includes(x.i);return `<div class="pair" onclick="reveal(event)"><button class="lineStar ${d?'on':''}" onclick="toggleDiff(${x.i},event)">${d?'★':'☆'}</button><div class="tag entag">English</div><div class="en">${esc(x.en)||'—'}</div><div class="pt"><div class="tag">Português</div>${esc(x.pt)||'<span class="meta">sem tradução</span>'}</div></div>`}).join(''):'<div class="card empty">Nenhuma frase marcada.</div>'}
+function reveal(e){if(e.target.closest('.lineStar'))return;if(viewMode==='study')e.currentTarget.classList.toggle('show')}
+function mode(m,b){viewMode=m;document.querySelectorAll('.modes .btn').forEach((x,i)=>{if(i<4)x.classList.remove('primary')});b.classList.add('primary');renderReader()}
+function difficultOnly(b){onlyDiff=!onlyDiff;b.classList.toggle('primary',onlyDiff);renderReader()}
+function toggleDiff(i,e){e.stopPropagation();const a=songs(),n=a.findIndex(x=>x.id===current);const set=new Set(a[n].diff||[]);set.has(i)?set.delete(i):set.add(i);a[n].diff=[...set].sort((x,y)=>x-y);a[n].updated=Date.now();putSongs(a);openSong(current).then(()=>{onlyDiff=false})}
+function favCurrent(){const a=songs(),i=a.findIndex(x=>x.id===current);a[i].favorite=!a[i].favorite;a[i].updated=Date.now();putSongs(a);$('fav').textContent=a[i].favorite?'★':'☆'}
+async function removeCurrent(){if(!current||!confirm('Excluir esta música e o áudio salvo?'))return;const id=current;putSongs(songs().filter(x=>x.id!==id));try{await adel(id)}catch{}current=null;showLib()}
+function seek(n){$('audio').currentTime=Math.max(0,($('audio').currentTime||0)+n)}function speed(){$('audio').playbackRate=parseFloat($('speed').value)}
+
+function showPractice(){stopAudio();show('practice');const out=[];songs().forEach(s=>(s.diff||[]).forEach(i=>{const p=pairs(s)[i];if(p)out.push({s,p})}));$('review').innerHTML=out.length?out.map(x=>`<div class="pair" onclick="openSong('${x.s.id}')"><div class="tag">${esc(x.s.title)}</div><div class="en">${esc(x.p.en)}</div><div class="pt"><div class="tag">Português</div>${esc(x.p.pt)}</div></div>`).join(''):'<div class="card empty">Marque frases com ★ para revisá-las aqui.</div>'}
+
+async function trPiece(t){const u='https://api.mymemory.translated.net/get?q='+encodeURIComponent(t)+'&langpair=en%7Cpt-BR',r=await fetch(u);if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();return(d.responseData?.translatedText||'').trim()}
+async function trLine(t){const c=cache(),k=t.trim().toLowerCase();if(c[k])return c[k];const r=await trPiece(t);c[k]=r;putCache(c);return r}
+async function autoTranslate(){const src=lines($('en').value.trimEnd());if(!src.some(x=>x.trim()))return alert('Cole a letra em inglês primeiro.');const msg=$('msg'),btn=$('translate'),bar=$('bar');btn.disabled=true;msg.classList.remove('hidden');$('prog').style.display='block';const total=src.filter(x=>x.trim()).length,out=[];let done=0;try{for(const l of src){if(!l.trim()){out.push('');continue}out.push(await trLine(l));done++;bar.style.width=Math.round(done/Math.max(1,total)*100)+'%';msg.textContent=`Traduzindo ${done}/${total}…`}$('pt').value=out.join('\n');msg.textContent='Tradução concluída. Revise gírias e metáforas.'}catch(e){$('pt').value=out.join('\n');msg.textContent='A tradução parou antes do fim: '+e.message}finally{btn.disabled=false}}
+
+function dl(name,text,type='application/json'){const a=document.createElement('a'),u=URL.createObjectURL(new Blob([text],{type}));a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+function backup(){dl('lyricside-backup.json',JSON.stringify({songs:songs(),cache:cache()},null,2))}
+function restorePick(){$('restore').click()}function restoreFile(e){const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.songs))throw 0;if(confirm('Substituir a biblioteca atual pelo backup?')){putSongs(d.songs);if(d.cache)putCache(d.cache);renderLib()}}catch{alert('Backup inválido')}};r.readAsText(f);e.target.value=''}
+
+let fs=parseFloat(localStorage.getItem('lyricside.fs')||'1');function af(){document.documentElement.style.setProperty('--fs',fs)}$('fu').onclick=()=>{fs=Math.min(1.6,+(fs+.1).toFixed(1));localStorage.setItem('lyricside.fs',fs);af()};$('fd').onclick=()=>{fs=Math.max(.8,+(fs-.1).toFixed(1));localStorage.setItem('lyricside.fs',fs);af()};af();renderLib();
+</script>
+</body>
+</html>

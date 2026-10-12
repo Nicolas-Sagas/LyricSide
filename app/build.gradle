@@ -1,0 +1,12 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'com.lyricside.app'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'com.lyricside.app'
+        minSdk 23
+        targetSdk 35
+        versionCode 3
+        versionName '2.1'
+    }
+}
